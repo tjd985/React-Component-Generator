@@ -1,4 +1,4 @@
-import Components from "./Components.ts";
+import { Components } from "./Components.ts";
 
 interface Events {
   [key: string]: { payload: string };

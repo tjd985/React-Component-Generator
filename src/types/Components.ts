@@ -24,4 +24,4 @@ interface Components {
   [key: string]: ComponentProperty;
 }
 
-export default Components;
+export type { Components, ComponentProperty, Subscription, State, Props };
