@@ -1,22 +1,22 @@
 function getDefaultValue(type: string) {
   switch (type) {
     case "object":
-      return {};
+      return "{}";
 
     case "boolean":
-      return false;
+      return "false";
 
     case "array":
-      return [];
+      return "[]";
 
     case "number":
-      return 0;
+      return "0";
 
     case "string":
       return "";
 
     default:
-      return null;
+      return "null";
   }
 }
 
