@@ -35,5 +35,8 @@ module.exports = {
     "no-await-in-loop": "off",
     "no-restricted-globals": "off",
     "react/no-unescaped-entities": "off",
+    "no-continue": "off",
+    "lines-between-class-members": "off",
+    "no-use-before-define": "off",
   },
 };
