@@ -1,24 +1,40 @@
-import { ComponentProperty } from "../types/Components.ts";
+import { ComponentProperty, Components } from "../types/Components.ts";
 
 import Component from "../class/Component.ts";
 
 function generateComponentStructure(
-  componenet: ComponentProperty,
+  component: ComponentProperty,
   componentName: string,
+  componentMap: Components,
 ) {
   const currentComponent: Component = new Component(componentName);
 
-  if (componenet.props) {
-    currentComponent.setPropsCode(componenet.props);
+  if (component.props) {
+    currentComponent.setPropsCode(component.props);
   }
 
-  if (componenet.state) {
-    currentComponent.setStateCode(componenet.state);
+  if (component.state) {
+    currentComponent.setStateCode(component.state);
+    currentComponent.setImportCode(false, "useState");
   }
 
-  if (componenet.children) {
-    currentComponent.setImportCode(componenet.children);
-    currentComponent.setReturnCode(componenet.children);
+  if (component.lazyLoad) {
+    currentComponent.setLazyTrue();
+  }
+
+  if (component.children) {
+    for (const child of component.children) {
+      const hasLazy = !!componentMap[child].lazyLoad;
+
+      currentComponent.setImportCode(hasLazy, child);
+
+      if (hasLazy) {
+        currentComponent.setImportCode(false, "lazy");
+        currentComponent.setImportCode(false, "Suspense");
+      }
+
+      currentComponent.setReturnCode(hasLazy, child);
+    }
   }
 
   return currentComponent;
