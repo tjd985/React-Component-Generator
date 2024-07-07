@@ -13,7 +13,7 @@ function getDefaultValue(type: string) {
       return "0";
 
     case "string":
-      return "";
+      return "default";
 
     default:
       return "null";
