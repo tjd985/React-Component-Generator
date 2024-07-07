@@ -38,5 +38,6 @@ module.exports = {
     "no-continue": "off",
     "lines-between-class-members": "off",
     "no-use-before-define": "off",
+    "no-plusplus": "off",
   },
 };
