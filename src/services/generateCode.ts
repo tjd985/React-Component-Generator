@@ -1,25 +1,30 @@
-import Component from "../class/Component.ts";
+import { CodeStack } from "../types/CodeStack.ts";
 
-function generateCode(componentStructure: Component, componentName: string) {
-  const importCodeList = componentStructure.getImportCode();
-  const propsCode = componentStructure.getPropsCode();
-  const stateCodeList = componentStructure.getStateCode();
-  const returnCodeList = componentStructure.getReturnCode();
+function generateCode(codeStack: CodeStack) {
+  let result = "";
+  let indent = 0;
 
-  return `
-import { useState } from "react";
-${importCodeList.length ? importCodeList.join("\n") : ""}
+  for (const codePart of codeStack) {
+    const { code, type } = codePart;
 
-export default function ${componentName}({ ${propsCode} }) {
-  ${stateCodeList.length ? stateCodeList.join("\n  ") : ""}
+    if (type === "OPEN") {
+      result += " ".repeat(indent) + code;
+      indent += 2;
 
-  return (
-    <>
-      ${returnCodeList.length ? returnCodeList.join("\n      ") : ""}
-    </>
-  );
-}
-  `;
+      continue;
+    }
+
+    if (type === "CLOSE") {
+      indent -= 2;
+      result += " ".repeat(indent) + code;
+
+      continue;
+    }
+
+    result += " ".repeat(indent) + code;
+  }
+
+  return result;
 }
 
 export default generateCode;
