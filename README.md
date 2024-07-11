@@ -1,30 +1,91 @@
-# React + TypeScript + Vite
+# React Component Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🎥 프리뷰
+<img src="./public/preview.gif" />
 
-Currently, two official plugins are available:
+<br />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✅ 요구사항
+1. **YAML 구성 파서**
+    - 컴포넌트 구조, props, state 및 관계를 정의하는 YAML 파일을 파싱합니다.
+    - 중첩된 컴포넌트 정의를 지원합니다.
+2. **React 컴포넌트 생성기**
+    - YAML 구성에 따라 함수형 React 컴포넌트를 생성합니다.
+    - props와 state에 대한 TypeScript 타입 주석을 포함합니다.
+3. **타입 추론 시스템**
+    - YAML 구조를 분석하여 TypeScript 타입을 추론합니다.
+    - 적절한 인터페이스 또는 타입 정의를 생성합니다.
+4. **Pub/Sub 이벤트 시스템**
+    - 컴포넌트 간 통신을 위한 간단한 퍼블리시/구독 시스템을 구현합니다.
+    - YAML에서 정의된 대로 컴포넌트가 이벤트를 구독하고 게시할 수 있도록 합니다.
+5. **종속성 분석기**
+    - YAML 구조를 기반으로 컴포넌트 종속성을 분석합니다.
+    - 컴포넌트 렌더링 순서를 최적화합니다.
+6. **동적 컴포넌트 로딩**
+    - 구성에서 지정한 대로 컴포넌트를 지연 로딩할 수 있도록 지원합니다.
+7. **에러 처리**
+    - 잘못된 구성에 대한 명확한 오류 메시지를 제공합니다.
+    - 생성된 컴포넌트에서 적절한 오류 경계를 구현합니다.
 
-## Expanding the ESLint configuration
+<br />
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## ⚒️ 기술 스택
+<div style="display:flex;">
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+</div>
 
-- Configure the top-level `parserOptions` property like this:
+<br />
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## ⚙️ 실행 방법
+- **저장소 클론**
+```bash
+git clone https://github.com/tjd985/React-Component-Generator.git
+```
+<br />
+
+- **종속성 설치**
+```bash
+npm install
+```
+<br />
+
+- **개발 서버 실행**
+```bash
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+<br />
+
+## 🏔️ 기술적 챌린지
+### 1. YAML구조 파일을 어떻게 리액트 컴포넌트 코드로 바꿀 수 있을까? <br />
+처음에는 YAML파일을 바로 리액트 컴포넌트 코드로 변환시키려고 시도를 했었습니다.
+다만 한번에 해결하기에는 너무 큰 문제였고, 이에따라서 작은 단위의 문제로 나눈 뒤 순차적으로 해결하자라는 결론에 다다르게 되었습니다.
+
+- **접근 방법**
+  1. **YAML → Tokens 변환** <br />
+     먼저 YAML 파일을 읽어와 토큰화하는 과정을 거쳤습니다. 이 과정에서 YAML 파일의 구조를 유지하면서 필요한 정보를 추출했습니다. <br />
+  3. **Tokens → JSON 변환** <br />
+     추출된 토큰을 기반으로 JSON 객체를 생성하기 위한 작업을 진행 중에 있습니다. <br />
+     이 과정에서 예상치 못한 많은 사이드 이펙트를 마주하며 구현을 완료하지 못했습니다. <br />
+  구체적으로는 계층 구조를 유지하고 데이터 유형을 올바르게 변환하는 데 어려움이 있었습니다. <br />
+  4. **JSON → codeStack 생성** <br />
+     JSON 객체를 바탕으로 리액트 컴포넌트 코드를 생성하기 위해 필요한 코드 스택을 구축했습니다. <br />
+     각각의 YAML 항목을 반복하면서 코드 스택에 필요한 코드 조각들을 추가했습니다. <br />
+  5. 줄 단위로 리액트 컴포넌트 코드로 변환 <br />
+  코드 스택을 기반으로 각 YAML 항목을 리액트 컴포넌트 코드로 변환했습니다. <br />
+  이 과정에서 열린 괄호({)와 닫힌 괄호(})가 나올 때마다 열린 괄호일 때는 인덴트를 늘리고, 닫힌 괄호일 때는 줄여가며 <br />
+  생성될 코드가 인덴팅(`space 2칸`)을 유지하도록 처리했습니다. <br />
+ <br />
+
+이 접근 방법을 통해 YAML 구조 파일을 읽어와서 자동화된 방식으로 리액트 컴포넌트 코드로 변환할 수 있었고, 이 과정에서 발생한 사이드 이펙트를 해결하기 위해서는 추가적인 노력이 필요합니다. <br />
+그러나, 이 경험을 통해 더 나은 코드 생성 및 자동화 프로세스를 구현하는 능력을 기르는데 많은 도움이 될 것 이라고 믿습니다. <br />
+<br />
+
+## 🤔 느낀점
+이 프로젝트를 통해 많은 기술적 도전 과제를 경험하게 되었고, 특히 YAML 파싱부터 리액트 컴포넌트 생성에 이르기까지 다양한 기술적 문제를 해결하면서 <br />
+구조를 효과적으로 변환하기 위해 끊임없이 고민하고, 이를 해결해 나가는 과정에서 큰 만족감을 느꼈습니다. <br />
+요구사항을 모두 완벽하게 구현하지는 못했지만 개발자로서의 성장을 이루고자 하는 의지가 더욱 강해지는 프로젝트였고, <br />
+앞으로 지속적으로 유지보수하며 고도화 시키고 싶은 프로젝트가 되었습니다. <br />
+이번 과제를 통해 정말 많은 것을 배울 수 있었고, 이런 기회를 주셔서 진심으로 감사드립니다.
+
