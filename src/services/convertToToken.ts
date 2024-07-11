@@ -1,8 +1,14 @@
 import getIndent from "../utils/getIndent.ts";
 
+interface Token {
+  name: string;
+  indent: number;
+  type: string;
+}
+
 function convertToToken(yamlString: string) {
   const lines = yamlString.split("\n");
-  const tokens = [];
+  const tokens: Token[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
